@@ -18,7 +18,7 @@ function browsersync() {
 }
 
 function stylesSCSS() {
-  return src('app/scss/**/*.scss', 'app/css/components/**/*.css')
+  return src('app/scss/**/*.scss')
     .pipe(scss({ outputStyle: 'compressed' })) // or expanded
     .pipe(concat('style.min.css'))
     .pipe(
@@ -79,6 +79,7 @@ function clearDist() {
 function build() {
   return src(
     [
+      'app/css/components.min.css',
       'app/css/style.min.css',
       'app/js/main.min.js',
       'app/fonts/**/*',
