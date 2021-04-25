@@ -1,0 +1,88 @@
+$font: sans-serif;
+$size: 16px;
+$width: 1400px;
+$padding: 0 40px;
+
+%flexbox {
+	display: flex;
+}
+%column {
+	flex-direction: column;
+}
+%grow {
+	flex-grow: 1;
+}
+%shrink {
+	flex-shrink: 0;
+}
+%none {
+	display: none;
+}
+%transition {
+	transition: 0.2s;
+}
+%placeholder {
+	font-family: $font;
+	font-size: $size;
+	color: #999;
+	opacity: 1;
+}
+
+// Styles
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+html,
+body {
+	position: relative;
+	font-family: $font;
+	font-weight: normal;
+	font-style: normal;
+	font-size: $size;
+}
+.width {
+	position: relative;
+	width: 100%;
+	max-width: $width;
+	padding: $padding;
+	margin: 0 auto;
+}
+.container {
+	@extend %flexbox;
+	@extend %column;
+}
+a {
+	text-decoration: none;
+}
+li {
+	list-style-position: inside;
+}
+button {
+	background-color: transparent;
+	font-family: $font;
+	font-size: $size;
+	border: 0;
+	cursor: pointer;
+}
+input {
+	font-family: $font;
+}
+:active,
+:focus {
+	outline: none;
+}
+::-webkit-input-placeholder {
+	@extend %placeholder;
+}
+::-moz-placeholder {
+	@extend %placeholder;
+}
+:-moz-placeholder {
+	@extend %placeholder;
+}
+:-ms-input-placeholder {
+	@extend %placeholder;
+}
