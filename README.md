@@ -19,4 +19,4 @@
 * JS копонента -> в папку `js/components`
 * Инициализацию провести в main.js
 
-Файлы CSS будут минимизированы и собраны в `components.min.css`, файлы JS — в `main.min.js`
+Файлы CSS будут минимизированы и собраны в `components.min.css`, файлы JS собраны в `main.min.js`
