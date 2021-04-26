@@ -7,6 +7,7 @@ const uglify = require('gulp-uglify-es').default // JS minify
 const autoprefixer = require('gulp-autoprefixer')
 const imagemin = require('gulp-imagemin')
 const imageminPngquant = require('imagemin-pngquant')
+const svgSprite = require('gulp-svg-sprite')
 const del = require('del')
 
 function browsersync() {
@@ -72,6 +73,27 @@ function images() {
     .pipe(dest('dist/images'))
 }
 
+function svg() {
+  return src('app/images/svg/**/*.svg')
+    .pipe(
+      svgSprite({
+        mode: {
+          symbol: {
+            sprite: '../sprite.svg',
+          },
+        },
+      })
+    )
+    .pipe(
+      imagemin([
+        imagemin.svgo({
+          plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
+        }),
+      ])
+    )
+    .pipe(dest('app/images'))
+}
+
 function clearDist() {
   return del('dist')
 }
@@ -93,6 +115,7 @@ function build() {
 }
 
 function watching() {
+  watch(['app/images/svg/**/*.svg'], svg)
   watch(['app/scss/**/*.scss'], stylesSCSS)
   watch(['app/css/components/**/*.css'], stylesCSS)
   watch(['app/js/**/*.js', '!app/js/main.min.js'], scripts) // следим за всеми, кроме min.js
@@ -106,6 +129,7 @@ exports.browsersync = browsersync
 exports.scripts = scripts
 exports.images = images
 exports.clearDist = clearDist
+exports.svg = svg
 
 exports.build = series(clearDist, images, build)
-exports.default = parallel(stylesSCSS, stylesCSS, scripts, browsersync, watching) // выполнение всего, что нужно, простым указанием команды gulp
+exports.default = parallel(stylesSCSS, stylesCSS, svg, scripts, browsersync, watching) // выполнение всего, что нужно, простым указанием команды gulp
