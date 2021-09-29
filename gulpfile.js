@@ -19,7 +19,7 @@ function browsersync() {
 }
 
 function stylesSCSS() {
-  return src('app/scss/**/*.scss')
+  return src('app/files/scss/**/*.scss')
     .pipe(scss({ outputStyle: 'compressed' })) // or expanded
     .pipe(concat('style.min.css'))
     .pipe(
@@ -28,12 +28,12 @@ function stylesSCSS() {
         grid: true,
       })
     )
-    .pipe(dest('app/css')) // складываем сжатый файл в папку css
+    .pipe(dest('app/files/css')) // складываем сжатый файл в папку css
     .pipe(browserSync.stream()) // обновляем страницу
 }
 
 function stylesCSS() {
-  return src('app/css/components/**/*.css')
+  return src('app/files/css/components/**/*.css')
     .pipe(csso())
     .pipe(concat('components.min.css'))
     .pipe(
@@ -42,25 +42,25 @@ function stylesCSS() {
         grid: true,
       })
     )
-    .pipe(dest('app/css'))
+    .pipe(dest('app/files/css'))
     .pipe(browserSync.stream())
 }
 
 function scripts() {
   return src([
     'node_modules/jquery/dist/jquery.js',
-    'app/js/components/**/*.js',
-    'app/js/main.js',
-    '!app/js/main.min.js',
+    'app/files/js/components/**/*.js',
+    'app/files/js/main.js',
+    '!app/files/js/main.min.js',
   ])
     .pipe(concat('main.min.js')) // объединяем всё в 1 файл с названием main.min.js
     .pipe(uglify()) // минифицируем main.min.js
-    .pipe(dest('app/js')) // кладём в папку js
+    .pipe(dest('app/files/js')) // кладём в папку js
     .pipe(browserSync.stream()) // обновляем страницу
 }
 
 function images() {
-  return src('app/images/**/*.+(png|jpeg|jpg|svg)')
+  return src('app/files/images/**/*.+(png|jpeg|jpg|svg)')
     .pipe(
       imagemin([
         imagemin.mozjpeg({ quality: 60, progressive: true }),
@@ -70,11 +70,11 @@ function images() {
         }),
       ])
     )
-    .pipe(dest('dist/images'))
+    .pipe(dest('dist/files/images'))
 }
 
 function svg() {
-  return src('app/images/svg/**/*.svg')
+  return src('app/files/images/svg/**/*.svg')
     .pipe(
       svgSprite({
         mode: {
@@ -91,7 +91,7 @@ function svg() {
         }),
       ])
     )
-    .pipe(dest('app/images'))
+    .pipe(dest('app/files/images'))
 }
 
 function clearDist() {
@@ -101,11 +101,11 @@ function clearDist() {
 function build() {
   return src(
     [
-      'app/css/components.min.css',
-      'app/css/style.min.css',
-      'app/js/main.min.js',
-      'app/fonts/**/*',
-      'app/favicon/**/*',
+      'app/files/css/components.min.css',
+      'app/files/css/style.min.css',
+      'app/files/js/main.min.js',
+      'app/files/fonts/**/*',
+      'app/files/favicon/**/*',
       'app/*.html',
     ],
     {
@@ -115,10 +115,10 @@ function build() {
 }
 
 function watching() {
-  watch(['app/images/svg/**/*.svg'], svg)
-  watch(['app/scss/**/*.scss'], stylesSCSS)
-  watch(['app/css/components/**/*.css'], stylesCSS)
-  watch(['app/js/**/*.js', '!app/js/main.min.js'], scripts) // следим за всеми, кроме min.js
+  watch(['app/files/images/svg/**/*.svg'], svg)
+  watch(['app/files/scss/**/*.scss'], stylesSCSS)
+  watch(['app/files/css/components/**/*.css'], stylesCSS)
+  watch(['app/files/js/**/*.js', '!app/files/js/main.min.js'], scripts) // следим за всеми, кроме min.js
   watch(['app/*.html']).on('change', browserSync.reload)
 }
 

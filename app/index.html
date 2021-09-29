@@ -1,24 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>[[*SEO-title:default=`[[*pagetitle]]`]] - [[++site_name]]</title>
-    <meta name="description" content="[[*SEO-description:default=`[[*pagetitle]]`]]" />
-    <!--    [[*SEO-keywords:!empty=`<meta name="keywords" content="[[*SEO-keywords]]" />`]]-->
+    <title>Title</title>
+    <meta name="description" content="Description" />
+    <meta name="keywords" content="keyword" />
     <base href="[[!++site_url]]" />
     <meta charset="[[++modx_charset]]" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
+    <!-- fonts -->
+
     <!--favicon-->
-    <link rel="shortcut icon" href="favicon/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="favicon/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="css/style.min.css" />
+    <link rel="shortcut icon" href="files/favicon/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="files/favicon/favicon.png" type="image/png" />
+    <link rel="stylesheet" href="files/css/style.min.css" />
   </head>
   <body>
-    <div class="container"></div>
+    <div class="overlay"></div>
+    <div class="page"></div>
+    <!-- /page -->
 
+    <!--  -->
     <!-- LINKS -->
-    <link rel="stylesheet" href="css/components.min.css" />
-    <script src="js/main.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="files/css/components.min.css" />
+    <script src="files/js/main.min.js"></script>
   </body>
 </html>

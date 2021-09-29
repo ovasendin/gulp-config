@@ -1,7 +1,10 @@
+@import 'design';
+
 $font: sans-serif;
 $size: 16px;
-$width: 1200px;
-$padding: 0 30px;
+$width: 1480px;
+$padding: 0 40px;
+$offset: 50px;
 
 %flexbox {
   display: flex;
@@ -19,7 +22,10 @@ $padding: 0 30px;
   flex-shrink: 0;
 }
 %icon-scale {
-  transform: scale(0.96);
+  transform: scale(0.9);
+}
+%button-scale {
+  transform: scale(0.98);
 }
 %shadow {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
@@ -28,7 +34,7 @@ $padding: 0 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
 @mixin icon-scale {
-  transform: scale(0.96);
+  transform: scale(0.9);
 }
 @mixin flexbox {
   display: flex;
@@ -51,12 +57,6 @@ $padding: 0 30px;
 %transition {
   transition: 0.2s;
 }
-%placeholder {
-  font-family: $font;
-  font-size: $size;
-  color: #999;
-  opacity: 1;
-}
 
 // Styles
 
@@ -72,17 +72,22 @@ body {
   font-weight: normal;
   font-style: normal;
   font-size: $size;
+  color: $fontDefault;
+  background-color: $bg;
+  min-height: 100vh;
 }
-.width {
+.page {
+  @extend %flexbox;
+  @extend %column;
+  overflow: hidden;
+  min-height: 100vh;
+}
+.container {
   position: relative;
   width: 100%;
   max-width: $width;
   padding: $padding;
   margin: 0 auto;
-}
-.container {
-  @extend %flexbox;
-  @extend %column;
 }
 a {
   text-decoration: none;
@@ -99,22 +104,40 @@ button {
 }
 input {
   font-family: $font;
+  border: 0;
 }
 :active,
 :focus {
   outline: none;
 }
+
 ::-webkit-input-placeholder {
-  @extend %placeholder;
+  font-family: $font;
+  color: $fontGreyInput;
+  font-size: $size - 2;
+  font-weight: normal;
+  opacity: 1;
 }
 ::-moz-placeholder {
-  @extend %placeholder;
+  font-family: $font;
+  color: $fontGreyInput;
+  font-size: $size - 2;
+  font-weight: normal;
+  opacity: 1;
 }
 :-moz-placeholder {
-  @extend %placeholder;
+  font-family: $font;
+  color: $fontGreyInput;
+  font-size: $size - 2;
+  font-weight: normal;
+  opacity: 1;
 }
 :-ms-input-placeholder {
-  @extend %placeholder;
+  font-family: $font;
+  color: $fontGreyInput;
+  font-size: $size - 2;
+  font-weight: normal;
+  opacity: 1;
 }
 
 // overlay
@@ -128,7 +151,7 @@ input {
   background: rgba(0, 0, 0, 0.6);
   visibility: hidden;
   opacity: 0;
-  z-index: 1;
+  z-index: 3;
 }
 .overlay.active {
   opacity: 1;
