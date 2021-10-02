@@ -8,6 +8,7 @@ const autoprefixer = require('gulp-autoprefixer')
 const imagemin = require('gulp-imagemin')
 const imageminPngquant = require('imagemin-pngquant')
 const svgSprite = require('gulp-svg-sprite')
+const combineMedia = require('gulp-combine-media')
 const del = require('del')
 
 function browsersync() {
@@ -28,13 +29,14 @@ function stylesSCSS() {
         grid: true,
       })
     )
+    .pipe(combineMedia()) // комбинируем @media запросы
+    .pipe(csso()) // сжимаем CSS
     .pipe(dest('app/files/css')) // складываем сжатый файл в папку css
     .pipe(browserSync.stream()) // обновляем страницу
 }
 
-function stylesCSS() {
-  return src('app/files/css/components/**/*.css')
-    .pipe(csso())
+function pluginsCSS() {
+  return src('app/files/plugins/**/*.css')
     .pipe(concat('components.min.css'))
     .pipe(
       autoprefixer({
@@ -42,6 +44,8 @@ function stylesCSS() {
         grid: true,
       })
     )
+    .pipe(combineMedia())
+    .pipe(csso()) // сжатие CSS
     .pipe(dest('app/files/css'))
     .pipe(browserSync.stream())
 }
@@ -50,6 +54,7 @@ function scripts() {
   return src([
     'node_modules/jquery/dist/jquery.js',
     'app/files/js/components/**/*.js',
+    'app/files/plugins/**/*.js',
     'app/files/js/main.js',
     '!app/files/js/main.min.js',
   ])
@@ -116,14 +121,14 @@ function build() {
 
 function watching() {
   watch(['app/files/images/svg/**/*.svg'], svg)
-  watch(['app/files/scss/**/*.scss'], stylesSCSS)
-  watch(['app/files/css/components/**/*.css'], stylesCSS)
-  watch(['app/files/js/**/*.js', '!app/files/js/main.min.js'], scripts) // следим за всеми, кроме min.js
+  watch(['app/files/scss/**/*.scss', 'app/templates/**/*.scss'], stylesSCSS)
+  watch(['app/files/plugins/**/*.css'], pluginsCSS)
+  watch(['app/files/**/*.js', '!app/files/js/main.min.js'], scripts) // следим за всеми, кроме min.js
   watch(['app/*.html']).on('change', browserSync.reload)
 }
 
 exports.stylesSCSS = stylesSCSS
-exports.stylesCSS = stylesCSS
+exports.pluginsCSS = pluginsCSS
 exports.watching = watching
 exports.browsersync = browsersync
 exports.scripts = scripts
@@ -132,4 +137,4 @@ exports.clearDist = clearDist
 exports.svg = svg
 
 exports.build = series(clearDist, images, build)
-exports.default = parallel(stylesSCSS, stylesCSS, svg, scripts, browsersync, watching) // выполнение всего, что нужно, простым указанием команды gulp
+exports.default = parallel(stylesSCSS, pluginsCSS, svg, scripts, browsersync, watching) // выполнение всего, что нужно, простым указанием команды gulp
