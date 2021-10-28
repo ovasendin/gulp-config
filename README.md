@@ -1,5 +1,7 @@
 # gulp-config
 
+`git clone https://github.com/ovasendin/gulp-config.git`
+
 #### Gulp конфигурация для HTML верстки
 
 - Препроцессор SASS/SCSS
