@@ -4,3 +4,4 @@ node_modules
 dist
 backup
 *.min.*
+!components.min.css
