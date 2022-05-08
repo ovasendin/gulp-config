@@ -1,29 +1,28 @@
-const { src, dest, watch, parallel, series } = require("gulp")
+const { src, dest, watch, parallel, series } = require('gulp')
 const scss = require("gulp-sass")(require("sass"))
 const csso = require('gulp-csso')
-const concat = require("gulp-concat")
-const browserSync = require("browser-sync").create()
-const uglify = require("gulp-uglify-es").default
-const autoprefixer = require("gulp-autoprefixer")
-const imagemin = require("gulp-imagemin")
+const concat = require('gulp-concat') // files concat
+const browserSync = require('browser-sync').create()
+const uglify = require('gulp-uglify-es').default // JS minify
+const autoprefixer = require('gulp-autoprefixer')
+const imagemin = require('gulp-imagemin')
 const imageminPngquant = require('imagemin-pngquant')
 const svgSprite = require('gulp-svg-sprite')
 const combineMedia = require('gulp-combine-media')
-const del = require("del")
+const del = require('del')
 
-
-function syncBrowser() {
+function browsersync() {
   browserSync.init({
     server: {
-      baseDir: "app/",
+      baseDir: 'app/',
     },
-  });
+  })
 }
 
 function stylesSCSS() {
-  return src("app/files/scss/**/*.scss")
-    .pipe(scss({ outputStyle: "compressed" }))
-    .pipe(concat("style.min.css"))
+  return src('app/files/scss/**/*.scss')
+    .pipe(scss({ outputStyle: 'compressed' })) // or expanded
+    .pipe(concat('style.min.css'))
     .pipe(
       autoprefixer({
         overrideBrowserslist: ['last 10 version'],
@@ -65,7 +64,7 @@ function scripts() {
 }
 
 function images() {
-  return src("app/files/images/**/*.+(png|jpeg|jpg|svg)")
+  return src('app/files/images/**/*.+(png|jpeg|jpg|svg)')
     .pipe(
       imagemin([
         imagemin.mozjpeg({ quality: 60, progressive: true }),
@@ -75,7 +74,7 @@ function images() {
         }),
       ])
     )
-    .pipe(dest("dist/files/images"));
+    .pipe(dest('dist/files/images'))
 }
 
 function svg() {
@@ -99,42 +98,42 @@ function svg() {
     .pipe(dest('app/files/images'))
 }
 
-function watching() {
-  watch(['app/files/images/svg/**/*.svg'], svg)
-  watch(['app/files/scss/**/*.scss', 'app/templates/**/*.scss'], stylesSCSS)
-  watch(['app/files/plugins/**/*.css'], pluginsCSS)
-  watch(["app/files/js/**/*.js", "!app/js/main.min.js"], scripts)
-  watch(["app/*.html"]).on("change", browserSync.reload)
-}
-
-function cleanDist() {
-	return del('dist')
+function clearDist() {
+  return del('dist')
 }
 
 function build() {
   return src(
     [
       'app/files/css/components.min.css',
-      "app/files/css/style.min.css",
-      "app/files/js/main.min.js",
-      "app/files/fonts/**/*",
-      "app/files/favicon/**/*",
-      "app/*.html",
+      'app/files/css/style.min.css',
+      'app/files/js/main.min.js',
+      'app/files/fonts/**/*',
+      'app/files/favicon/**/*',
+      'app/*.html',
     ],
-    { 
-      base: "app" 
+    {
+      base: 'app',
     }
-  ).pipe(dest("dist"));
+  ).pipe(dest('dist'))
 }
 
-exports.scripts = scripts;
-exports.watching = watching;
-exports.stylesSCSS = stylesSCSS;
-exports.pluginsCSS = pluginsCSS
-exports.syncBrowser = syncBrowser;
-exports.images = images;
-exports.cleanDist = cleanDist;
-exports.svg = svg;
+function watching() {
+  watch(['app/files/images/svg/**/*.svg'], svg)
+  watch(['app/files/scss/**/*.scss', 'app/templates/**/*.scss'], stylesSCSS)
+  watch(['app/files/plugins/**/*.css'], pluginsCSS)
+  watch(['app/files/**/*.js', '!app/files/js/main.min.js'], scripts) // следим за всеми, кроме min.js
+  watch(['app/*.html']).on('change', browserSync.reload)
+}
 
-exports.build = series(cleanDist, images, build);
-exports.default = parallel(stylesSCSS, pluginsCSS, scripts, svg, syncBrowser, watching);
+exports.stylesSCSS = stylesSCSS
+exports.pluginsCSS = pluginsCSS
+exports.watching = watching
+exports.browsersync = browsersync
+exports.scripts = scripts
+exports.images = images
+exports.clearDist = clearDist
+exports.svg = svg
+
+exports.build = series(clearDist, images, build)
+exports.default = parallel(stylesSCSS, pluginsCSS, svg, scripts, browsersync, watching) // выполнение всего, что нужно, простым указанием команды gulp
