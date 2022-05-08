@@ -4,4 +4,5 @@ node_modules
 dist
 backup
 *.min.*
+package-lock.json
 !components.min.css
