@@ -6,6 +6,7 @@ git clone https://github.com/ovasendin/gulp-config.git
 
 ## UPDATE 2022.05.08
 
+- text
 - Ещё не протестировано в работе!
 - Обновление до актуальной версии
 - Удалена библиотека jQuery
